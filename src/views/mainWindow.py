@@ -53,7 +53,7 @@ class MainWindow(rootView.RootView):
 
         # start the file cascade
         __filemenu.add_command(label="New", command=self.newCharacter)
-        __filemenu.add_command(label="Open...", command=self.doNothing)
+        __filemenu.add_command(label="Open...", command=self.openCharacter)
         __filemenu.add_command(label="Save", command=self.saveCharacter)
         __filemenu.add_command(label="Save As...", command=self.saveAsCharacter)
         __filemenu.add_separator()
@@ -170,6 +170,18 @@ class MainWindow(rootView.RootView):
                 pass
         else:
             self.newCharacterStuff()
+
+    def openCharacterStuff(self):
+        pass
+
+    def openCharacter(self):
+        if rootView.RootView.dataChanged:
+            if self.doYouWantToSave():
+                self.openCharacterStuff()
+            else:
+                pass
+        else:
+            self.openCharacterStuff()
 
     def updateAll(self):
         self.basicInfoFrame.updateAll()
