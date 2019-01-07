@@ -32,9 +32,11 @@ class BasicInfoFrame(rootView.RootView):
 
     def pnameChanged(self, *args):
         self.charData[0].basicInfo.pname = self.pname.get()
+        rootView.RootView.dataChanged = True
 
     def cnameChanged(self, *args):
         self.charData[0].basicInfo.cname = self.cname.get()
+        rootView.RootView.dataChanged = True
 
     def updateAll(self):
         self.pname.set(self.charData[0].basicInfo.pname)
