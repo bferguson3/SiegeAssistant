@@ -41,3 +41,15 @@ class BasicInfoFrame(rootView.RootView):
     def updateAll(self):
         self.pname.set(self.charData[0].basicInfo.pname)
         self.cname.set(self.charData[0].basicInfo.cname)
+
+    # loading and saving stuff here
+    def saveToXML(self, doc, root):
+        pnameEle = doc.createElement('pname')
+        pnameTxt = doc.createTextNode(self.charData[0].basicInfo.pname)
+        pnameEle.appendChild(pnameTxt)
+        root.appendChild(pnameEle)
+
+        cnameEle = doc.createElement('cname')
+        cnameTxt = doc.createTextNode(self.charData[0].basicInfo.cname)
+        cnameEle.appendChild(cnameTxt)
+        root.appendChild(cnameEle)

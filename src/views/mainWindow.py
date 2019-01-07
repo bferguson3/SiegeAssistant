@@ -5,6 +5,7 @@ import tkinter.ttk as ttk
 import urllib.parse
 import os
 from tkinter import messagebox, filedialog
+import xml.dom.minidom as md
 
 
 class MainWindow(rootView.RootView):
@@ -13,7 +14,7 @@ class MainWindow(rootView.RootView):
         self.__root = tkroot
         self.__root.protocol("WM_DELETE_WINDOW", self.__windowDeleteCallback)
         style = ttk.Style()
-        #print(style.theme_names())
+        # print(style.theme_names())
         style.theme_use(themename='clam')
 
         # init data
@@ -43,8 +44,8 @@ class MainWindow(rootView.RootView):
             messagebox.showerror("Oops", "Unable to use path: " + tmpPathSg)
             self.useThisSaveDirectory = ''
 
-        #print(os.path.expanduser('~'))
-        #print(os.getcwd())
+        # print(os.path.expanduser('~'))
+        # print(os.getcwd())
 
         # setup the menu bar
         __menubar = tk.Menu(self.__root)
@@ -94,9 +95,9 @@ class MainWindow(rootView.RootView):
             useThisName = self.charFileName
         else:
             useThisName = self.makeFileNameSafe(self.charData[0].basicInfo.cname)
-            #useThisName = self.charData[0].basicInfo.cname
+            # useThisName = self.charData[0].basicInfo.cname
 
-            #useThisName = urllib.parse.quote(useThisName)
+            # useThisName = urllib.parse.quote(useThisName)
 
         response = filedialog.asksaveasfilename(parent=self.__root, initialfile=useThisName,
                                                 initialdir=self.useThisSaveDirectory,
@@ -116,9 +117,23 @@ class MainWindow(rootView.RootView):
         else:
             self.saveAsCharacter()
 
+    def saveCharacterStuff(self, filePath):
+        #print(filePath)
+        try:
+            imp = md.getDOMImplementation()
+            doc = imp.createDocument(None, "Siege Character", None)
+            root = doc.documentElement
+            ele = doc.createElement('Basic Info')
+            self.basicInfoFrame.saveToXML(doc,ele)
+            root.appendChild(ele)
 
-    def saveCharacterStuff(self, response):
-        print(response)
+            f = open(filePath, 'wb')
+            f.write(doc.toprettyxml(indent='  ', encoding='utf-8'))
+            f.close()
+
+        except Exception as e:
+            messagebox.showerror("Oops", "Unable to save file at: " + filePath)
+            print(e)
         # end with
         rootView.RootView.dataChanged = False
 
