@@ -86,8 +86,21 @@ class MainWindow(rootView.RootView):
         __frame.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S))
         __frame.pack(fill=tk.BOTH, expand=1)
 
+        # final stuff
+        rootView.RootView.dataChanged = False
+
     def doYouWantToSave(self):
-        pass
+        response = messagebox.askyesnocancel(title="Save Character?",
+                                             message="Do you want to save the existing character?")
+        if response:
+            if self.saveCharacter():
+                return True  # save worked, move on.
+            else:
+                return False  # save failed, don't delete the data
+        elif response is None:
+            return False  # meaning don't create a new character or open a character
+        else:
+            return True  # they don't want to save, but go ahead and make or load a new character
 
     def saveAsCharacter(self):
         useThisName = ''
@@ -104,44 +117,59 @@ class MainWindow(rootView.RootView):
                                                 title="Save As...",
                                                 defaultextension='sec',
                                                 filetypes=(("Siege Engine Characters", "*.sec"), ("all files", "*.*")))
-        self.saveCharacterStuff(response)
+        return self.saveCharacterStuff(response)
 
     def saveCharacter(self):
         if self.hasCharFileName:
             useThisName = self.charFileName
             checkpath = os.path.normpath(self.useThisSaveDirectory + '/' + useThisName)
             if os.path.exists(checkpath):
-                self.saveCharacterStuff(checkpath)
+                return self.saveCharacterStuff(checkpath)
             else:
-                self.saveAsCharacter()
+                return self.saveAsCharacter()
         else:
-            self.saveAsCharacter()
+            return self.saveAsCharacter()
 
     def saveCharacterStuff(self, filePath):
-        #print(filePath)
         try:
             imp = md.getDOMImplementation()
             doc = imp.createDocument(None, "Siege Character", None)
             root = doc.documentElement
             ele = doc.createElement('Basic Info')
-            self.basicInfoFrame.saveToXML(doc,ele)
+            self.basicInfoFrame.saveToXML(doc, ele)
             root.appendChild(ele)
 
             f = open(filePath, 'wb')
             f.write(doc.toprettyxml(indent='  ', encoding='utf-8'))
             f.close()
 
+            # end with
+            self.hasCharFileName = True
+            self.useThisSaveDirectory, self.charFileName = os.path.split(filePath)
+            rootView.RootView.dataChanged = False
+            return True
+
         except Exception as e:
             messagebox.showerror("Oops", "Unable to save file at: " + filePath)
             print(e)
-        # end with
+            return False
+
+    def newCharacterStuff(self):
+        self.charData[0] = charData.CharData()
+        self.updateAll()
+
+        # final stuff
+        self.hasCharFileName = False
         rootView.RootView.dataChanged = False
 
     def newCharacter(self):
         if rootView.RootView.dataChanged:
-            self.doYouWantToSave()
-        self.charData[0] = charData.CharData()
-        self.updateAll()
+            if self.doYouWantToSave():
+                self.newCharacterStuff()
+            else:
+                pass
+        else:
+            self.newCharacterStuff()
 
     def updateAll(self):
         self.basicInfoFrame.updateAll()
