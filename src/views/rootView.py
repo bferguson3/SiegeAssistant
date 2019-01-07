@@ -11,3 +11,11 @@ class RootView:
             s = s.replace(c, '')
         s = s.strip()
         return s
+
+    def getTextFromChildNodes(self, list):
+        t = ''
+        for nd in list:
+            if nd.nodeType == nd.TEXT_Node:
+                t = t + nd.data
+        return t
+

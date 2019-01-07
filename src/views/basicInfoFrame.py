@@ -53,3 +53,7 @@ class BasicInfoFrame(rootView.RootView):
         cnameTxt = doc.createTextNode(self.charData[0].basicInfo.cname)
         cnameEle.appendChild(cnameTxt)
         root.appendChild(cnameEle)
+
+    def loadFromXML(self, root):
+        self.charData[0].basicInfo.pname = root.getElementsByTagName('pname')[0].childNodes[0].data
+        self.charData[0].basicInfo.cname = root.getElementsByTagName('cname')[0].childNodes[0].data

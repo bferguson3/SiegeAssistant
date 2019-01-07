@@ -131,28 +131,29 @@ class MainWindow(rootView.RootView):
             return self.saveAsCharacter()
 
     def saveCharacterStuff(self, filePath):
-        try:
-            imp = md.getDOMImplementation()
-            doc = imp.createDocument(None, "Siege Character", None)
-            root = doc.documentElement
-            ele = doc.createElement('Basic Info')
-            self.basicInfoFrame.saveToXML(doc, ele)
-            root.appendChild(ele)
+        if filePath is not None:
+            try:
+                imp = md.getDOMImplementation()
+                doc = imp.createDocument(None, "Siege_Character", None)
+                root = doc.documentElement
+                ele = doc.createElement('Basic_Info')
+                self.basicInfoFrame.saveToXML(doc, ele)
+                root.appendChild(ele)
 
-            f = open(filePath, 'wb')
-            f.write(doc.toprettyxml(indent='  ', encoding='utf-8'))
-            f.close()
+                f = open(filePath, 'wb')
+                f.write(doc.toprettyxml(indent='  ', encoding='utf-8'))
+                f.close()
 
-            # end with
-            self.hasCharFileName = True
-            self.useThisSaveDirectory, self.charFileName = os.path.split(filePath)
-            rootView.RootView.dataChanged = False
-            return True
+                # end with
+                self.hasCharFileName = True
+                self.useThisSaveDirectory, self.charFileName = os.path.split(filePath)
+                rootView.RootView.dataChanged = False
+                return True
 
-        except Exception as e:
-            messagebox.showerror("Oops", "Unable to save file at: " + filePath)
-            print(e)
-            return False
+            except Exception as e:
+                messagebox.showerror("Oops", "Unable to save file at: " + filePath)
+                print(e)
+                return False
 
     def newCharacterStuff(self):
         self.charData[0] = charData.CharData()
@@ -172,7 +173,30 @@ class MainWindow(rootView.RootView):
             self.newCharacterStuff()
 
     def openCharacterStuff(self):
-        pass
+        response = filedialog.askopenfilename(parent=self.__root,
+                                                initialdir=self.useThisSaveDirectory,
+                                                title="Open...",
+                                                defaultextension='sec',
+                                                filetypes=(("Siege Engine Characters", "*.sec"), ("all files", "*.*")))
+        if response:
+            try:
+                self.newCharacterStuff() #just to clear everything out
+                f = open(response, 'rb')
+                dom = md.parse(f)
+                bi = dom.getElementsByTagName('Basic_Info')[0]
+                self.basicInfoFrame.loadFromXML(bi)
+                f.close()
+
+                # end with
+                self.hasCharFileName = True
+                self.useThisSaveDirectory, self.charFileName = os.path.split(response)
+                self.updateAll()
+                rootView.RootView.dataChanged = False
+
+            except Exception as e:
+                messagebox.showerror("Oops", "Unable to open file at: " + response)
+                print(e)
+
 
     def openCharacter(self):
         if rootView.RootView.dataChanged:
