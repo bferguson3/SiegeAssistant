@@ -7,6 +7,8 @@ import os
 from tkinter import messagebox, filedialog
 import xml.dom.minidom as md
 import datetime
+import pkgutil
+import res
 
 class MainWindow(rootView.RootView):
 
@@ -44,8 +46,13 @@ class MainWindow(rootView.RootView):
             messagebox.showerror("Oops", "Unable to use path: " + tmpPathSg)
             self.useThisSaveDirectory = ''
 
-        # print(os.path.expanduser('~'))
-        # print(os.getcwd())
+        #import the language
+        try:
+            langbin = pkgutil.get_data('res','language.xml')
+            print (langbin)
+        except Exception as e:
+            messagebox.showerror("Oops", "Unable to load language file."+os.linesep+"Program may not work correctly.")
+            print(e)
 
         # setup the menu bar
         __menubar = tk.Menu(self.__root)

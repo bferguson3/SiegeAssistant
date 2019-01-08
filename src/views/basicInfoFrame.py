@@ -3,6 +3,7 @@ from tkinter import ttk
 import tkinter as tk
 
 
+
 class BasicInfoFrame(rootView.RootView):
 
     def __init__(self, frame, charData):
@@ -19,9 +20,8 @@ class BasicInfoFrame(rootView.RootView):
         self.cname.trace_add("write", self.cnameChanged)
         ttk.Entry(self.__frame, width=30, textvariable=self.cname).grid(row=1, column=1)
 
-        # game
-
-        # experience points
+        #game
+        #xeperience points
 
         # add update values
         self.updateAll()
