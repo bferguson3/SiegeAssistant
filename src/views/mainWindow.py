@@ -48,11 +48,36 @@ class MainWindow(rootView.RootView):
 
         #import the language
         try:
+            language_list = []
             langbin = pkgutil.get_data('res','language.xml')
-            print (langbin)
+            lang_xml = langbin.decode('UTF-8', 'ignore')
+            print(lang_xml)
+
+
+
+            currentlanguage = "english" #we'll eventually read this from an options file
+
+            dom = md.parseString(lang_xml)
+            root = dom.getElementsByTagName('language')
+            print (root)
+            print (len(root))
+
+            for element in root:
+                if element.hasAttribute(currentlanguage):
+                    cur_lang_root = element
+                else:
+                    messagebox.showerror("Oops",
+                                         "Unable to load language file." + os.linesep + "Program may not work correctly.")
+                    self.langBackupPlan()
+
+            #get menu items
+            #menu_element = root.getElementsByTagName('menubar')
+            #print (menu_element)
+
         except Exception as e:
             messagebox.showerror("Oops", "Unable to load language file."+os.linesep+"Program may not work correctly.")
             print(e)
+            self.langBackupPlan()
 
         # setup the menu bar
         __menubar = tk.Menu(self.__root)
@@ -259,3 +284,9 @@ class MainWindow(rootView.RootView):
         # self.__root.destroy()
         # Yea, we need to do more here.
         # alot more
+
+    def readLangFromXML(self,root):
+        pass
+
+    def langBackupPlan(self):
+        pass
