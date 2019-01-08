@@ -2,11 +2,11 @@ from src.views import rootView, basicInfoFrame
 from src.models import charData
 import tkinter as tk
 import tkinter.ttk as ttk
-import urllib.parse
+#import urllib.parse
 import os
 from tkinter import messagebox, filedialog
 import xml.dom.minidom as md
-
+import datetime
 
 class MainWindow(rootView.RootView):
 
@@ -56,6 +56,10 @@ class MainWindow(rootView.RootView):
         __filemenu.add_command(label="Open...", command=self.openCharacter)
         __filemenu.add_command(label="Save", command=self.saveCharacter)
         __filemenu.add_command(label="Save As...", command=self.saveAsCharacter)
+        __filemenu.add_separator()
+        __filemenu.add_command(label="View as PDF", command=self.doNothing, state='disabled')
+        __filemenu.add_command(label="Export as PDF", command=self.doNothing, state='disabled')
+        __filemenu.add_command(label="Export as TXT", command=self.exportAsTXT)
         __filemenu.add_separator()
         __filemenu.add_command(label="Exit", command=self.__windowDeleteCallback)
 
@@ -174,13 +178,13 @@ class MainWindow(rootView.RootView):
 
     def openCharacterStuff(self):
         response = filedialog.askopenfilename(parent=self.__root,
-                                                initialdir=self.useThisSaveDirectory,
-                                                title="Open...",
-                                                defaultextension='sec',
-                                                filetypes=(("Siege Engine Characters", "*.sec"), ("all files", "*.*")))
+                                              initialdir=self.useThisSaveDirectory,
+                                              title="Open...",
+                                              defaultextension='sec',
+                                              filetypes=(("Siege Engine Characters", "*.sec"), ("all files", "*.*")))
         if response:
             try:
-                self.newCharacterStuff() #just to clear everything out
+                self.newCharacterStuff()  # just to clear everything out
                 f = open(response, 'rb')
                 dom = md.parse(f)
                 bi = dom.getElementsByTagName('Basic_Info')[0]
@@ -197,7 +201,6 @@ class MainWindow(rootView.RootView):
                 messagebox.showerror("Oops", "Unable to open file at: " + response)
                 print(e)
 
-
     def openCharacter(self):
         if rootView.RootView.dataChanged:
             if self.doYouWantToSave():
@@ -212,6 +215,37 @@ class MainWindow(rootView.RootView):
 
     def doNothing(self):
         pass
+
+    def exportAsTXT(self):
+        useThisName = ''
+        if self.hasCharFileName:
+            useThisName = self.charFileName
+        else:
+            useThisName = self.makeFileNameSafe(self.charData[0].basicInfo.cname)
+        response = filedialog.asksaveasfilename(parent=self.__root, initialfile=useThisName,
+                                                initialdir=self.useThisSaveDirectory,
+                                                title="Export As...",
+                                                defaultextension='txt',
+                                                filetypes=(("Text File", "*.txt"), ("all files", "*.*")))
+        try:
+            if response is not None:
+                endl = os.linesep
+                f = open(response, 'wt')
+                f.write("Temporary Siege Engine Character sheet" + endl)
+                f.write(endl)
+                f.write(
+                    "Because the program is still under development, this admittedly ugly text-only sheet will have to do for now." + endl)
+                f.write(endl)
+                self.basicInfoFrame.exportToTxt(f,endl)
+                f.write(endl)
+                #print("This report was generated on "+ datetime.date.strftime('%A %b, %m')+" at "+datetime.time.strftime()+endl)
+                t = datetime.datetime.now()
+                print("This report was generated on " + t.strftime('%A, %d %m at %I:%M %p')+ endl)
+
+                f.close()
+        except Exception as e:
+            messagebox.showerror("Oops", "Unable to export txt file at: " + response)
+            print(e)
 
     def __windowDeleteCallback(self):
         self.__root.destroy()  # if messagebox.askokcancel("Quit", "Do you really wish to quit?"):

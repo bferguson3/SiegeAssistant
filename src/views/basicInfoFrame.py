@@ -57,3 +57,9 @@ class BasicInfoFrame(rootView.RootView):
     def loadFromXML(self, root):
         self.charData[0].basicInfo.pname = root.getElementsByTagName('pname')[0].childNodes[0].data
         self.charData[0].basicInfo.cname = root.getElementsByTagName('cname')[0].childNodes[0].data
+
+    def exportToTxt(self, f, endl):
+        f.write('Basic Information' + endl)
+        f.write(endl)
+        f.write('Player Name: ' + self.charData[0].basicInfo.pname + endl)
+        f.write('Character Name: ' + self.charData[0].basicInfo.cname + endl)
