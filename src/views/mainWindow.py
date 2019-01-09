@@ -284,7 +284,13 @@ class MainWindow(rootView.RootView):
         # alot more
 
     def readLangFromXML(self, root):
-        elelist = root.getElementsByTagName('menubar')
+        elelist = root.getElementsByTagName('menubar')[0]
+        menu_list = elelist.getElementsByTagName('phrase')
+        menu_dict = {}
+        for phrase in menu_list:
+            t1 = phrase.getAttribute('item')
+            t2 = phrase.childNodes[0].data
+            menu_dict.update({t1:t2})
 
 
     def langBackupPlan(self):
