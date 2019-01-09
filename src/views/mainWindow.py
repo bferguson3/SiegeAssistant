@@ -82,24 +82,25 @@ class MainWindow(rootView.RootView):
         __filemenu = tk.Menu(__menubar, tearoff=0)
 
         # start the file cascade
-        __filemenu.add_command(label="New", command=self.newCharacter)
-        __filemenu.add_command(label="Open...", command=self.openCharacter)
-        __filemenu.add_command(label="Save", command=self.saveCharacter)
-        __filemenu.add_command(label="Save As...", command=self.saveAsCharacter)
+        menubar_dict = self.language_dict['menubar']
+        __filemenu.add_command(label=menubar_dict['new'], command=self.newCharacter)
+        __filemenu.add_command(label=menubar_dict['open'], command=self.openCharacter)
+        __filemenu.add_command(label=menubar_dict['save'], command=self.saveCharacter)
+        __filemenu.add_command(label=menubar_dict['saveas'], command=self.saveAsCharacter)
         __filemenu.add_separator()
-        __filemenu.add_command(label="View as PDF", command=self.doNothing, state='disabled')
-        __filemenu.add_command(label="Export as PDF", command=self.doNothing, state='disabled')
-        __filemenu.add_command(label="Export as TXT", command=self.exportAsTXT)
+        __filemenu.add_command(label=menubar_dict['vpdf'], command=self.doNothing, state='disabled')
+        __filemenu.add_command(label=menubar_dict['epdf'], command=self.doNothing, state='disabled')
+        __filemenu.add_command(label=menubar_dict['etxt'], command=self.exportAsTXT)
         __filemenu.add_separator()
-        __filemenu.add_command(label="Exit", command=self.__windowDeleteCallback)
+        __filemenu.add_command(label=menubar_dict['exit'], command=self.__windowDeleteCallback)
 
-        __menubar.add_cascade(label="File", menu=__filemenu)
+        __menubar.add_cascade(label=menubar_dict['file'], menu=__filemenu)
 
         self.__root.config(menu=__menubar)
 
         # make the base frame
         __frame = ttk.Frame(self.__root)
-        __frame.master.title('Siege Assistant')
+        __frame.master.title(self.language_dict['mainwindow']['windowtitle'])
 
         # start the tabs
         __nb = ttk.Notebook(__frame)
@@ -286,16 +287,23 @@ class MainWindow(rootView.RootView):
             self.__root.destroy()
 
     def readLangFromXML(self, root):
-        elelist = root.getElementsByTagName('menubar')[0]
-        menu_list = elelist.getElementsByTagName('phrase')
-        menu_dict = {}
-        for phrase in menu_list:
-            t1 = phrase.getAttribute('item')
-            t2 = phrase.childNodes[0].data
-            menu_dict.update({t1: t2})
+        headlist = ('menubar','mainwindow')
+        self.language_dict = {}
+        for header in headlist:
+            elelist = root.getElementsByTagName(header)[0]
+            q_list = elelist.getElementsByTagName('phrase')
+            q_dict = {}
+            for phrase in q_list:
+                t1 = phrase.getAttribute('item')
+                t2 = phrase.childNodes[0].data
+                q_dict.update({t1: t2})
+
+            self.language_dict.update({header:q_dict})
+
+
 
     def langBackupPlan(self):
-        menubar_dict = {'new': 'New Character', 'open': 'Open...', 'save': 'Save', 'saveas': 'Save As...',
+        menubar_dict = {'file':'File','new': 'New Character', 'open': 'Open...', 'save': 'Save', 'saveas': 'Save As...',
                         'vpdf': 'View as PDF', 'epdf': 'Export as PDF', 'etxt': 'Export as TXT', 'exit': 'Exit'}
-
-        self.language_dict = {'menubar': menubar_dict}
+        mainwindow_dict = {'windowtitle':'Siege Assistant'}
+        self.language_dict = {'menubar': menubar_dict,'mainwindow':mainwindow_dict}

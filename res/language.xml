@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <language name="english">
+    <mainwindow>
+        <phrase item="windowtitle">Siege Assistant</phrase>
+    </mainwindow>
     <menubar>
+        <phrase item="file">File</phrase>
         <phrase item="new">New</phrase>
         <phrase item="open">Open...</phrase>
         <phrase item="save">Save</phrase>
