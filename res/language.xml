@@ -3,5 +3,11 @@
     <menubar>
         <phrase item="new">New</phrase>
         <phrase item="open">Open...</phrase>
+        <phrase item="save">Save</phrase>
+        <phrase item="saveas">Save As...</phrase>
+        <phrase item="vpdf">View as PDF</phrase>
+        <phrase item="epdf">Export as PDF</phrase>
+        <phrase item="etxt">Export as TXT</phrase>
+        <phrase item="exit">Exit</phrase>
     </menubar>
 </language>

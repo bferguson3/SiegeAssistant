@@ -132,9 +132,9 @@ class MainWindow(rootView.RootView):
             else:
                 return False  # save failed, don't delete the data
         elif response is None:
-            return False  # meaning don't create a new character or open a character
+            return False  # calcel the operation
         else:
-            return True  # they don't want to save, but go ahead and make or load a new character
+            return True  # they don't want to save, but go ahead and do whatever
 
     def saveAsCharacter(self):
         useThisName = ''
@@ -278,10 +278,12 @@ class MainWindow(rootView.RootView):
             print(e)
 
     def __windowDeleteCallback(self):
-        self.__root.destroy()  # if messagebox.askokcancel("Quit", "Do you really wish to quit?"):
-        # self.__root.destroy()
-        # Yea, we need to do more here.
-        # alot more
+        if rootView.RootView.dataChanged:
+            response = self.doYouWantToSave()
+            if response:  # remember, true means either the save worked, or they didn't want to save
+                self.__root.destroy()
+        else:
+            self.__root.destroy()
 
     def readLangFromXML(self, root):
         elelist = root.getElementsByTagName('menubar')[0]
@@ -290,10 +292,10 @@ class MainWindow(rootView.RootView):
         for phrase in menu_list:
             t1 = phrase.getAttribute('item')
             t2 = phrase.childNodes[0].data
-            menu_dict.update({t1:t2})
-
+            menu_dict.update({t1: t2})
 
     def langBackupPlan(self):
-        menubar_dict = {'new': 'New Character', 'open':'Open...'}
+        menubar_dict = {'new': 'New Character', 'open': 'Open...', 'save': 'Save', 'saveas': 'Save As...',
+                        'vpdf': 'View as PDF', 'epdf': 'Export as PDF', 'etxt': 'Export as TXT', 'exit': 'Exit'}
 
         self.language_dict = {'menubar': menubar_dict}
