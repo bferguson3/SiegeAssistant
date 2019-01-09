@@ -2,13 +2,14 @@ from src.views import rootView, basicInfoFrame
 from src.models import charData
 import tkinter as tk
 import tkinter.ttk as ttk
-#import urllib.parse
+# import urllib.parse
 import os
 from tkinter import messagebox, filedialog
 import xml.dom.minidom as md
 import datetime
 import pkgutil
 import res
+
 
 class MainWindow(rootView.RootView):
 
@@ -46,36 +47,32 @@ class MainWindow(rootView.RootView):
             messagebox.showerror("Oops", "Unable to use path: " + tmpPathSg)
             self.useThisSaveDirectory = ''
 
-        #import the language
+        # import the language
         try:
-            language_list = []
-            langbin = pkgutil.get_data('res','language.xml')
+            langbin = pkgutil.get_data('res', 'language.xml')
             lang_xml = langbin.decode('UTF-8', 'ignore')
             print(lang_xml)
 
-
-
-            currentlanguage = "english" #we'll eventually read this from an options file
+            currentlanguage = "english"  # we'll eventually read this from an options file
 
             dom = md.parseString(lang_xml)
             root = dom.getElementsByTagName('language')
-            print (root)
-            print (len(root))
+            print(root)
+            print(len(root))
 
+            counter = 0
             for element in root:
-                if element.hasAttribute(currentlanguage):
-                    cur_lang_root = element
+                if element.hasAttribute(currentlanguage) and counter < 1:
+                    self.readLangFromXML(element)
+                    counter = counter + 1
                 else:
                     messagebox.showerror("Oops",
                                          "Unable to load language file." + os.linesep + "Program may not work correctly.")
                     self.langBackupPlan()
 
-            #get menu items
-            #menu_element = root.getElementsByTagName('menubar')
-            #print (menu_element)
-
         except Exception as e:
-            messagebox.showerror("Oops", "Unable to load language file."+os.linesep+"Program may not work correctly.")
+            messagebox.showerror("Oops",
+                                 "Unable to load language file." + os.linesep + "Program may not work correctly.")
             print(e)
             self.langBackupPlan()
 
@@ -268,11 +265,11 @@ class MainWindow(rootView.RootView):
                 f.write(
                     "Because the program is still under development, this admittedly ugly text-only sheet will have to do for now." + endl)
                 f.write(endl)
-                self.basicInfoFrame.exportToTxt(f,endl)
+                self.basicInfoFrame.exportToTxt(f, endl)
                 f.write(endl)
-                #print("This report was generated on "+ datetime.date.strftime('%A %b, %m')+" at "+datetime.time.strftime()+endl)
+                # print("This report was generated on "+ datetime.date.strftime('%A %b, %m')+" at "+datetime.time.strftime()+endl)
                 t = datetime.datetime.now()
-                print("This report was generated on " + t.strftime('%A, %d %m at %I:%M %p')+ endl)
+                print("This report was generated on " + t.strftime('%A, %d %m at %I:%M %p') + endl)
 
                 f.close()
         except Exception as e:
@@ -285,8 +282,11 @@ class MainWindow(rootView.RootView):
         # Yea, we need to do more here.
         # alot more
 
-    def readLangFromXML(self,root):
+    def readLangFromXML(self, root):
         pass
 
     def langBackupPlan(self):
-        pass
+        menubar_dict = {'New':'New Character'}
+
+
+        self.language_dict = {'menubar':menubar_dict}
