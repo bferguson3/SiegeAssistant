@@ -3,7 +3,13 @@
     <mainwindow>
         <mainwindow_phrases>
             <phrase item="windowtitle">Siege Assistant</phrase>
+            <phrase item="basicinfotitle">Basic Info</phrase>
+            <phrase item="attributestitle">Attributes</phrase>
         </mainwindow_phrases>
+        <error_phrases>
+            <phrase item="error_title">Oops...</phrase>
+            <phrase item="save_file_error">Unable to save file at: </phrase>
+        </error_phrases>
         <messageboxes>
             <phrase item="doyouwanttosave_title">Save Character?</phrase>
             <phrase item="doyouwanttosave_message">Do you want to save the existing character?</phrase>
@@ -23,4 +29,9 @@
             <phrase item="exit">Exit</phrase>
         </menubar>
     </mainwindow>
+    <basic_info>
+        <somepart>
+            <phrase item="temp">Temp Phrase</phrase>
+        </somepart>
+    </basic_info>
 </language>

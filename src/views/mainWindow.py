@@ -51,7 +51,6 @@ class MainWindow(rootView.RootView):
         try:
             langbin = pkgutil.get_data('res', 'language.xml')
             lang_xml = langbin.decode('UTF-8', 'ignore')
-            print(lang_xml)
 
             currentlanguage = "english"  # we'll eventually read this from an options file
 
@@ -107,13 +106,13 @@ class MainWindow(rootView.RootView):
 
         __fBasic = ttk.Frame(__nb)
 
-        self.basicInfoFrame = basicInfoFrame.BasicInfoFrame(__fBasic, self.charData)
+        self.basicInfoFrame = basicInfoFrame.BasicInfoFrame(__fBasic, self.charData, self.language_dict)
 
-        __nb.add(__fBasic, text="Basic Info")
+        __nb.add(__fBasic, text=self.language_dict['mainwindow']['mainwindow_phrases']['basicinfotitle'])
 
         __fAttrib = ttk.Frame(__nb)
         # stuff here
-        __nb.add(__fAttrib, text="Attributes")
+        __nb.add(__fAttrib, text=self.language_dict['mainwindow']['mainwindow_phrases']['attributestitle'])
 
         # pack that stuff or it won't appear.
         __nb.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S))
@@ -125,8 +124,8 @@ class MainWindow(rootView.RootView):
         rootView.RootView.dataChanged = False
 
     def doYouWantToSave(self):
-        response = messagebox.askyesnocancel(title="Save Character?",
-                                             message="Do you want to save the existing character?")
+        response = messagebox.askyesnocancel(title=self.language_dict['mainwindow']['messageboxes']['doyouwanttosave_title'],
+                                             message=self.language_dict['mainwindow']['messageboxes']['doyouwanttosave_message'])
         if response:
             if self.saveCharacter():
                 return True  # save worked, move on.
@@ -149,7 +148,7 @@ class MainWindow(rootView.RootView):
 
         response = filedialog.asksaveasfilename(parent=self.__root, initialfile=useThisName,
                                                 initialdir=self.useThisSaveDirectory,
-                                                title="Save As...",
+                                                title=self.language_dict['mainwindow']['messageboxes']['saveas_title'],
                                                 defaultextension='sec',
                                                 filetypes=(("Siege Engine Characters", "*.sec"), ("all files", "*.*")))
         return self.saveCharacterStuff(response)
@@ -288,7 +287,7 @@ class MainWindow(rootView.RootView):
 
     def readLangFromXML(self, root):
         masterlist = ('mainwindow','basic_info')
-        headlist = ('menubar','mainwindow_phrases')
+        headlist = ('menubar','mainwindow_phrases', 'error_phrases','messageboxes')
         self.language_dict = {}
         for my_window_list in masterlist:
             w_list = {}
@@ -308,5 +307,6 @@ class MainWindow(rootView.RootView):
         menubar_dict = {'file':'File','new': 'New Character', 'open': 'Open...', 'save': 'Save', 'saveas': 'Save As...',
                         'vpdf': 'View as PDF', 'epdf': 'Export as PDF', 'etxt': 'Export as TXT', 'exit': 'Exit'}
         mainwindow_dict = {'windowtitle':'Siege Assistant'}
-        window_dict = {'menubar': menubar_dict,'mainwindow_phrases':mainwindow_dict}
+        error_dict = {'error_title':"Oops...",'save_file_error':'Unable to save file at: '}
+        window_dict = {'menubar': menubar_dict,'mainwindow_phrases':mainwindow_dict, 'error_phrases':error_dict}
         self.language_dict = {'mainwindow':window_dict}

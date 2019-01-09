@@ -6,8 +6,9 @@ import tkinter as tk
 
 class BasicInfoFrame(rootView.RootView):
 
-    def __init__(self, frame, charData):
+    def __init__(self, frame, charData, language_dict):
         self.charData = charData
+        self.language_dict = language_dict['basic_info']
         self.__frame = frame
 
         ttk.Label(self.__frame, text="Player Name").grid(row=0, column=0)
