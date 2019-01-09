@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <language name="english">
     <mainwindow>
-        <phrase item="windowtitle">Siege Assistant</phrase>
+        <mainwindow_phrases>
+            <phrase item="windowtitle">Siege Assistant</phrase>
+        </mainwindow_phrases>
+        <messageboxes>
+            <phrase item="doyouwanttosave_title">Save Character?</phrase>
+            <phrase item="doyouwanttosave_message">Do you want to save the existing character?</phrase>
+            <phrase item="saveas_title">Save As...</phrase>
+            <phrase item="open_title">Open...</phrase>
+            <phrase item="exportas_title">Export As...</phrase>
+        </messageboxes>
+        <menubar>
+            <phrase item="file">File</phrase>
+            <phrase item="new">New</phrase>
+            <phrase item="open">Open...</phrase>
+            <phrase item="save">Save</phrase>
+            <phrase item="saveas">Save As...</phrase>
+            <phrase item="vpdf">View as PDF</phrase>
+            <phrase item="epdf">Export as PDF</phrase>
+            <phrase item="etxt">Export as TXT</phrase>
+            <phrase item="exit">Exit</phrase>
+        </menubar>
     </mainwindow>
-    <messageboxes>
-        <phrase item="doyouwanttosave_title">Save Character?</phrase>
-        <phrase item="doyouwanttosave_message">Do you want to save the existing character?</phrase>
-        <phrase item="saveas_title">Save As...</phrase>
-        <phrase item="open_title">Open...</phrase>
-        <phrase item="exportas_title">Export As...</phrase>
-    </messageboxes>
-    <menubar>
-        <phrase item="file">File</phrase>
-        <phrase item="new">New</phrase>
-        <phrase item="open">Open...</phrase>
-        <phrase item="save">Save</phrase>
-        <phrase item="saveas">Save As...</phrase>
-        <phrase item="vpdf">View as PDF</phrase>
-        <phrase item="epdf">Export as PDF</phrase>
-        <phrase item="etxt">Export as TXT</phrase>
-        <phrase item="exit">Exit</phrase>
-    </menubar>
 </language>

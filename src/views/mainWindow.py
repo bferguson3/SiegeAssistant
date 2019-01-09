@@ -82,7 +82,7 @@ class MainWindow(rootView.RootView):
         __filemenu = tk.Menu(__menubar, tearoff=0)
 
         # start the file cascade
-        menubar_dict = self.language_dict['menubar']
+        menubar_dict = self.language_dict['mainwindow']['menubar']
         __filemenu.add_command(label=menubar_dict['new'], command=self.newCharacter)
         __filemenu.add_command(label=menubar_dict['open'], command=self.openCharacter)
         __filemenu.add_command(label=menubar_dict['save'], command=self.saveCharacter)
@@ -100,7 +100,7 @@ class MainWindow(rootView.RootView):
 
         # make the base frame
         __frame = ttk.Frame(self.__root)
-        __frame.master.title(self.language_dict['mainwindow']['windowtitle'])
+        __frame.master.title(self.language_dict['mainwindow']['mainwindow_phrases']['windowtitle'])
 
         # start the tabs
         __nb = ttk.Notebook(__frame)
@@ -287,23 +287,26 @@ class MainWindow(rootView.RootView):
             self.__root.destroy()
 
     def readLangFromXML(self, root):
-        headlist = ('menubar','mainwindow')
+        masterlist = ('mainwindow','basic_info')
+        headlist = ('menubar','mainwindow_phrases')
         self.language_dict = {}
-        for header in headlist:
-            elelist = root.getElementsByTagName(header)[0]
-            q_list = elelist.getElementsByTagName('phrase')
-            q_dict = {}
-            for phrase in q_list:
-                t1 = phrase.getAttribute('item')
-                t2 = phrase.childNodes[0].data
-                q_dict.update({t1: t2})
+        for my_window_list in masterlist:
+            w_list = {}
+            for header in headlist:
+                elelist = root.getElementsByTagName(header)[0]
+                q_list = elelist.getElementsByTagName('phrase')
+                q_dict = {}
+                for phrase in q_list:
+                    t1 = phrase.getAttribute('item')
+                    t2 = phrase.childNodes[0].data
+                    q_dict.update({t1: t2})
 
-            self.language_dict.update({header:q_dict})
-
-
+                w_list.update({header:q_dict})
+            self.language_dict.update({my_window_list:w_list})
 
     def langBackupPlan(self):
         menubar_dict = {'file':'File','new': 'New Character', 'open': 'Open...', 'save': 'Save', 'saveas': 'Save As...',
                         'vpdf': 'View as PDF', 'epdf': 'Export as PDF', 'etxt': 'Export as TXT', 'exit': 'Exit'}
         mainwindow_dict = {'windowtitle':'Siege Assistant'}
-        self.language_dict = {'menubar': menubar_dict,'mainwindow':mainwindow_dict}
+        window_dict = {'menubar': menubar_dict,'mainwindow_phrases':mainwindow_dict}
+        self.language_dict = {'mainwindow':window_dict}
