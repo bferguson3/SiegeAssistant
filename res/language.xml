@@ -3,6 +3,13 @@
     <mainwindow>
         <phrase item="windowtitle">Siege Assistant</phrase>
     </mainwindow>
+    <messageboxes>
+        <phrase item="doyouwanttosave_title">Save Character?</phrase>
+        <phrase item="doyouwanttosave_message">Do you want to save the existing character?</phrase>
+        <phrase item="saveas_title">Save As...</phrase>
+        <phrase item="open_title">Open...</phrase>
+        <phrase item="exportas_title">Export As...</phrase>
+    </messageboxes>
     <menubar>
         <phrase item="file">File</phrase>
         <phrase item="new">New</phrase>
