@@ -57,18 +57,19 @@ class MainWindow(rootView.RootView):
 
             dom = md.parseString(lang_xml)
             root = dom.getElementsByTagName('language')
-            print(root)
-            print(len(root))
 
-            counter = 0
+            language_failure = True
+            count = 0
             for element in root:
-                if element.hasAttribute(currentlanguage) and counter < 1:
-                    self.readLangFromXML(element)
-                    counter = counter + 1
-                else:
-                    messagebox.showerror("Oops",
-                                         "Unable to load language file." + os.linesep + "Program may not work correctly.")
-                    self.langBackupPlan()
+                if element.hasAttribute('name'):
+                    if element.getAttribute('name') == currentlanguage and count < 1:
+                        language_failure = False
+                        self.readLangFromXML(element)
+
+            if language_failure:
+                messagebox.showerror("Oops",
+                                     "Unable to parse language file." + os.linesep + "Program may not work correctly.")
+                self.langBackupPlan()
 
         except Exception as e:
             messagebox.showerror("Oops",
@@ -283,10 +284,10 @@ class MainWindow(rootView.RootView):
         # alot more
 
     def readLangFromXML(self, root):
-        pass
+        elelist = root.getElementsByTagName('menubar')
+
 
     def langBackupPlan(self):
-        menubar_dict = {'New':'New Character'}
+        menubar_dict = {'new': 'New Character', 'open':'Open...'}
 
-
-        self.language_dict = {'menubar':menubar_dict}
+        self.language_dict = {'menubar': menubar_dict}

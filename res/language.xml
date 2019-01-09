@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <language name="english">
-<menubar>
-<phrase item="New">New Character</phrase>
-</menubar>
+    <menubar>
+        <phrase item="new">New</phrase>
+        <phrase item="open">Open...</phrase>
+    </menubar>
 </language>
