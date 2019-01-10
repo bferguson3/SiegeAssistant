@@ -35,3 +35,38 @@
         </somepart>
     </basic_info>
 </language>
+<language name="japanese">
+    <mainwindow>
+        <mainwindow_phrases>
+            <phrase item="windowtitle">Siege アシスタント</phrase>
+            <phrase item="basicinfotitle">基本情報</phrase>
+            <phrase item="attributestitle">能力値</phrase> <!--"Ability Points"-->
+        </mainwindow_phrases>
+        <error_phrases>
+            <phrase item="error_title">あらまぁ...</phrase>
+            <phrase item="save_file_error">この場所で保存できませんでした：</phrase> <!--"Could not save at this location:"-->
+        </error_phrases>
+        <messageboxes>
+            <phrase item="doyouwanttosave_title">キャラクター保存</phrase>
+            <phrase item="doyouwanttosave_message">現在のキャラを保存しますか？</phrase>
+            <phrase item="saveas_title">名をつけて保存...</phrase>
+            <phrase item="open_title">開く...</phrase>
+            <phrase item="exportas_title">別のフォーマットで保存...</phrase> <!--"Save as another format..." エキスポート can also work here.-->
+        </messageboxes>
+        <menubar>
+            <phrase item="file">ファイル</phrase>
+            <phrase item="new">新しいキャラ</phrase>
+            <phrase item="open">開く...</phrase>
+            <phrase item="save">保存</phrase>
+            <phrase item="saveas">名をつけて保存...</phrase>
+            <phrase item="vpdf">PDFで表示</phrase>
+            <phrase item="epdf">PDFとしてエキスポート</phrase>
+            <phrase item="etxt">TXTとしてエキスポート</phrase>
+            <phrase item="exit">終了</phrase>
+        </menubar>
+        <basic_info>
+            <somepart>
+                <phrase item="temp">臨時フレーズ</phrase>
+            </somepart>
+        </basic_info>
+</language>
